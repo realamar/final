@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Counter App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fdfbfb, #ebedee);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .container {
+      background: #fff;
+      padding: 2.5rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .counter-value {
+      font-size: 3rem;
+      margin: 1rem 0;
+      color: #2c3e50;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      min-width: 100px;
+    }
+
+    .increment {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .increment:hover {
+      background-color: #218838;
+    }
+
+    .decrement {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .decrement:hover {
+      background-color: #c82333;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 1.8rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: bold;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #c0392b;
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <a href="about.html" class="close-button" title="Go back">✕</a>
+
+  <div class="container">
+    <h2>Simple Counter</h2>
+    <div class="counter-value" id="counter">0</div>
+    <div class="buttons">
+      <button class="decrement" id="decrementBtn">- Decrement</button>
+      <button class="increment" id="incrementBtn">+ Increment</button>
+    </div>
+  </div>
+
+  <script>
+    const counter = document.getElementById("counter");
+    const incrementBtn = document.getElementById("incrementBtn");
+    const decrementBtn = document.getElementById("decrementBtn");
+
+    let count = 0;
+
+    incrementBtn.addEventListener("click", () => {
+      count++;
+      counter.textContent = count;
+    });
+
+    decrementBtn.addEventListener("click", () => {
+      count--;
+      counter.textContent = count;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Mixer</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+        position: relative;
+    }
+
+    .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 320px;
+    }
+
+    h1 {
+        margin-bottom: 1.5rem;
+        color: #4f46e5;
+    }
+
+    label {
+        display: block;
+        margin: 1rem 0 0.5rem;
+        color: #374151;
+    }
+
+    input[type="color"] {
+        width: 100%;
+        height: 50px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    button {
+        margin-top: 1.5rem;
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #4f46e5;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    button:hover {
+        background-color: #4338ca;
+    }
+
+    .result {
+        margin-top: 1.5rem;
+        height: 100px;
+        border-radius: 8px;
+        border: 2px dashed #cbd5e1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #374151;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    /* Close Button */
+    .close-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .close-button:hover {
+        background-color: #dc2626;
+        transform: scale(1.1);
+    }
+</style>
+</head>
+<body>
+
+<!-- Close Button -->
+<button class="close-button" onclick="goBack()">×</button>
+
+<div class="container">
+    <h1>Color Mixer</h1>
+    <label for="color1">Choose First Color:</label>
+    <input type="color" id="color1" value="#ff0000">
+
+    <label for="color2">Choose Second Color:</label>
+    <input type="color" id="color2" value="#0000ff">
+
+    <button onclick="mixColors()">Mix Colors</button>
+
+    <div class="result" id="result">Mixed Color</div>
+</div>
+
+<script>
+// Function to mix two colors (average RGB values)
+function mixColors() {
+    const color1 = document.getElementById('color1').value;
+    const color2 = document.getElementById('color2').value;
+    const resultDiv = document.getElementById('result');
+
+    const rgb1 = hexToRgb(color1);
+    const rgb2 = hexToRgb(color2);
+
+    const mixedRgb = {
+        r: Math.round((rgb1.r + rgb2.r) / 2),
+        g: Math.round((rgb1.g + rgb2.g) / 2),
+        b: Math.round((rgb1.b + rgb2.b) / 2)
+    };
+
+    const mixedColor = `rgb(${mixedRgb.r}, ${mixedRgb.g}, ${mixedRgb.b})`;
+    resultDiv.style.backgroundColor = mixedColor;
+    resultDiv.textContent = mixedColor;
+}
+
+// Helper function to convert hex to RGB
+function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) {
+        hex = hex.split('').map(h => h + h).join('');
+    }
+    const bigint = parseInt(hex, 16);
+    return {
+        r: (bigint >> 16) & 255,
+        g: (bigint >> 8) & 255,
+        b: bigint & 255
+    };
+}
+
+// Close Button Function
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.close();
+    }
+}
+</script>
+
+</body>
+</html>

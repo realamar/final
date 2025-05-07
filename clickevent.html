@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Click Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 3rem 4rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .container:hover {
+      transform: scale(1.02);
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    button:hover {
+      background-color: #357ABD;
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+    }
+
+    #message {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      color: #444;
+      opacity: 0;
+      animation: fadeIn 0.6s forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 1.8rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: bold;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #c0392b;
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <a href="about.html" class="close-button" title="Go back">✕</a>
+
+  <div class="container">
+    <h2>Click the Button Below</h2>
+    <button id="clickButton">Click Me!</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const button = document.getElementById("clickButton");
+    const message = document.getElementById("message");
+
+    button.addEventListener("click", () => {
+      const time = new Date().toLocaleTimeString();
+      message.textContent = `✨ You clicked the button at ${time} ✨`;
+      message.style.animation = "none";
+      void message.offsetWidth; // Reset animation
+      message.style.animation = "fadeIn 0.6s forwards";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JavaScript Alert Demo</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f6f9fc, #e5eaf5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 2.5rem 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .alert-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .alert-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .confirm-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .confirm-btn:hover {
+      background-color: #1e7e34;
+    }
+
+    .prompt-btn {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    .prompt-btn:hover {
+      background-color: #e0a800;
+    }
+
+    .output {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: #444;
+      min-height: 1.5em;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 1.8rem;
+      text-decoration: none;
+      color: #555;
+      font-weight: bold;
+      background: #fff;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .close-button:hover {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+      color: #c0392b;
+      transform: rotate(90deg);
+    }
+  </style>
+</head>
+<body>
+  <a href="about.html" class="close-button" title="Go back">✕</a>
+
+  <div class="container">
+    <h2>JavaScript Alert Demo</h2>
+    <button class="alert-btn" onclick="showAlert()">Show Alert</button>
+    <button class="confirm-btn" onclick="showConfirm()">Show Confirm</button>
+    <button class="prompt-btn" onclick="showPrompt()">Show Prompt</button>
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    const output = document.getElementById('output');
+
+    function showAlert() {
+      alert("This is a simple alert box!");
+      output.textContent = "Alert displayed.";
+    }
+
+    function showConfirm() {
+      const result = confirm("Do you confirm this action?");
+      output.textContent = result ? "You pressed OK." : "You pressed Cancel.";
+    }
+
+    function showPrompt() {
+      const name = prompt("What is your name?");
+      output.textContent = name ? `Hello, ${name}!` : "Prompt cancelled.";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamic Operators</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #e0f2fe, #c7d2fe);
+        position: relative;
+    }
+
+    .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 320px;
+    }
+
+    h1 {
+        margin-bottom: 1.5rem;
+        color: #4f46e5;
+    }
+
+    label {
+        display: block;
+        margin: 0.8rem 0 0.5rem;
+        color: #374151;
+    }
+
+    input[type="number"], select {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .result {
+        margin-top: 1rem;
+        height: 60px;
+        border-radius: 8px;
+        background-color: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #374151;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 2px dashed #cbd5e1;
+        transition: all 0.3s;
+    }
+
+    /* Close Button */
+    .close-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .close-button:hover {
+        background-color: #dc2626;
+        transform: scale(1.1);
+    }
+</style>
+</head>
+<body>
+
+<!-- Close Button -->
+<button class="close-button" onclick="goBack()">×</button>
+
+<div class="container">
+    <h1>Dynamic Operators</h1>
+
+    <label for="number1">First Number:</label>
+    <input type="number" id="number1" value="0">
+
+    <label for="number2">Second Number:</label>
+    <input type="number" id="number2" value="0">
+
+    <label for="operation">Choose Operation:</label>
+    <select id="operation" onchange="computeResult()">
+        <option value="+">Addition (+)</option>
+        <option value="-">Subtraction (−)</option>
+        <option value="*">Multiplication (×)</option>
+        <option value="/">Division (÷)</option>
+    </select>
+
+    <div class="result" id="result">Result: 0</div>
+</div>
+
+<script>
+function computeResult() {
+    const num1 = parseFloat(document.getElementById('number1').value);
+    const num2 = parseFloat(document.getElementById('number2').value);
+    const operation = document.getElementById('operation').value;
+    const resultDiv = document.getElementById('result');
+
+    let result;
+
+    if (isNaN(num1) || isNaN(num2)) {
+        resultDiv.textContent = 'Enter valid numbers';
+        resultDiv.style.color = '#ef4444';
+        return;
+    }
+
+    switch (operation) {
+        case '+':
+            result = num1 + num2;
+            break;
+        case '-':
+            result = num1 - num2;
+            break;
+        case '*':
+            result = num1 * num2;
+            break;
+        case '/':
+            result = num2 !== 0 ? (num1 / num2) : 'Cannot divide by 0';
+            break;
+        default:
+            result = 'Invalid operation';
+    }
+
+    resultDiv.textContent = 'Result: ' + result;
+    resultDiv.style.color = '#374151';
+}
+
+// Trigger result calculation on number change too
+document.getElementById('number1').addEventListener('input', computeResult);
+document.getElementById('number2').addEventListener('input', computeResult);
+
+// Close Button Function
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.close();
+    }
+}
+</script>
+
+</body>
+</html>

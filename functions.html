@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reusable Functions Demo</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, #fce7f3, #d8b4fe);
+        position: relative;
+    }
+
+    .container {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        text-align: center;
+        width: 350px;
+    }
+
+    h1 {
+        margin-bottom: 1rem;
+        color: #7c3aed;
+    }
+
+    label {
+        display: block;
+        margin: 0.8rem 0 0.5rem;
+        color: #374151;
+    }
+
+    input[type="number"] {
+        width: 100%;
+        padding: 0.6rem;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
+    .buttons button {
+        flex: 1 1 40%;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 8px;
+        background-color: #7c3aed;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .buttons button:hover {
+        background-color: #6d28d9;
+    }
+
+    .result {
+        margin-top: 1rem;
+        height: 60px;
+        border-radius: 8px;
+        background-color: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #374151;
+        font-weight: bold;
+        font-size: 1.2rem;
+        border: 2px dashed #cbd5e1;
+        transition: all 0.3s;
+    }
+
+    /* Close Button */
+    .close-button {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background-color: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .close-button:hover {
+        background-color: #dc2626;
+        transform: scale(1.1);
+    }
+</style>
+</head>
+<body>
+
+<!-- Close Button -->
+<button class="close-button" onclick="goBack()">×</button>
+
+<div class="container">
+    <h1>Reusable Functions</h1>
+
+    <label for="num1">First Number:</label>
+    <input type="number" id="num1" value="0">
+
+    <label for="num2">Second Number:</label>
+    <input type="number" id="num2" value="0">
+
+    <div class="buttons">
+        <button onclick="handleOperation('add')">Add (+)</button>
+        <button onclick="handleOperation('subtract')">Subtract (−)</button>
+        <button onclick="handleOperation('multiply')">Multiply (×)</button>
+        <button onclick="handleOperation('divide')">Divide (÷)</button>
+    </div>
+
+    <div class="result" id="result">Result: 0</div>
+</div>
+
+<script>
+// Reusable modular functions
+function add(a, b) {
+    return a + b;
+}
+
+function subtract(a, b) {
+    return a - b;
+}
+
+function multiply(a, b) {
+    return a * b;
+}
+
+function divide(a, b) {
+    if (b === 0) {
+        return 'Cannot divide by 0';
+    }
+    return a / b;
+}
+
+// Function to handle user input and call operation
+function handleOperation(operation) {
+    const num1 = parseFloat(document.getElementById('num1').value);
+    const num2 = parseFloat(document.getElementById('num2').value);
+    const resultDiv = document.getElementById('result');
+
+    if (isNaN(num1) || isNaN(num2)) {
+        resultDiv.textContent = 'Enter valid numbers';
+        resultDiv.style.color = '#ef4444';
+        return;
+    }
+
+    let result;
+    switch (operation) {
+        case 'add':
+            result = add(num1, num2);
+            break;
+        case 'subtract':
+            result = subtract(num1, num2);
+            break;
+        case 'multiply':
+            result = multiply(num1, num2);
+            break;
+        case 'divide':
+            result = divide(num1, num2);
+            break;
+        default:
+            result = 'Invalid operation';
+    }
+
+    resultDiv.textContent = 'Result: ' + result;
+    resultDiv.style.color = '#374151';
+}
+
+// Close Button Function
+function goBack() {
+    if (window.history.length > 1) {
+        window.history.back();
+    } else {
+        window.close();
+    }
+}
+</script>
+
+</body>
+</html>
