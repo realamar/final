@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculator</title>
-  <!-- Inter font for clean modern typography -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -30,88 +29,92 @@
       --shadow-light: rgba(255,255,255,0.1);
       --shadow-dark: rgba(0,0,0,0.6);
     }
-    * { margin:0; padding:0; box-sizing:border-box; font-family:var(--font); }
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: var(--font);
+    }
     body {
-      display:flex; align-items:center; justify-content:center;
-      min-height:100vh; background:var(--bg); color:var(--text);
-      transition: background .3s, color .3s;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; background: var(--bg); color: var(--text);
+      transition: background 0.3s, color 0.3s;
     }
-
     .theme-toggle {
-      position:absolute; top:1rem; left:1rem;
+      position: absolute; top: 1rem; left: 1rem;
     }
-    .theme-toggle input { display:none; }
+    .theme-toggle input { display: none; }
     .theme-toggle label {
-      cursor:pointer; width:50px; height:26px; display:block; position:relative;
-      background:#ccc; border-radius:34px; transition:.4s;
+      cursor: pointer; width: 50px; height: 26px; display: block; position: relative;
+      background: #ccc; border-radius: 34px; transition: 0.4s;
     }
     .theme-toggle label:before {
-      content:""; position:absolute; width:20px; height:20px; left:3px; bottom:3px;
-      background:#fff; border-radius:50%; transition:.4s;
+      content: ""; position: absolute; width: 20px; height: 20px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%; transition: 0.4s;
     }
-    .theme-toggle input:checked + label { background:#666; }
-    .theme-toggle input:checked + label:before { transform:translateX(24px); }
+    .theme-toggle input:checked + label { background: #666; }
+    .theme-toggle input:checked + label:before { transform: translateX(24px); }
 
     .close-button {
-      position:absolute; top:1rem; right:1rem;
-      background:var(--danger); color:#fff; border:none;
-      width:2.5rem; height:2.5rem; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--danger); color: #fff; border: none;
+      width: 2.5rem; height: 2.5rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
       box-shadow: inset 2px 2px 5px var(--shadow-light), inset -2px -2px 5px var(--shadow-dark);
-      cursor:pointer; transition:transform .2s, background .2s;
+      cursor: pointer; transition: transform 0.2s, background 0.2s;
     }
-    .close-button:hover { transform:scale(1.1); background:#dc2626; }
+    .close-button:hover {
+      transform: scale(1.1); background: #dc2626;
+    }
 
     .calculator {
-      width: 100%; max-width: 480px; border-radius:1rem;
-      background:var(--panel);
+      width: 100%; max-width: 480px; border-radius: 1rem;
+      background: var(--panel);
       box-shadow:
         inset 8px 8px 16px var(--shadow-light),
         inset -8px -8px 16px var(--shadow-dark),
         4px 4px 8px var(--shadow-dark);
-      overflow:hidden; padding-bottom:1rem;
+      overflow: hidden; padding-bottom: 1rem;
     }
 
     .display {
-      padding:2rem; text-align:right;
+      padding: 2rem; text-align: right;
       box-shadow: inset 4px 4px 8px var(--shadow-light), inset -4px -4px 8px var(--shadow-dark);
     }
     .previous-operand {
-      font-size:1rem; color:var(--text-muted); min-height:1.2em;
+      font-size: 1rem; color: var(--text-muted); min-height: 1.2em;
     }
     .current-operand {
-      font-size:2.5rem; font-weight:600; min-height:1.5em; word-wrap:break-word;
+      font-size: 2.5rem; font-weight: 600; min-height: 1.5em; word-wrap: break-word;
     }
 
     .buttons {
-      display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; padding:0 1rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; padding: 0 1rem;
     }
     button {
-      padding:1.5rem; font-size:1.4rem; cursor:pointer; border:none;
-      background:var(--panel); border-radius:var(--btn-radius);
+      padding: 1.5rem; font-size: 1.4rem; cursor: pointer; border: none;
+      background: var(--panel); border-radius: var(--btn-radius);
       box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
-      transition: background .2s, transform .1s, box-shadow .2s;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
     }
-    button:hover { background:var(--bg); }
+    button:hover { background: var(--bg); }
     button:active {
-      transform:translateY(2px);
+      transform: translateY(2px);
       box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     }
 
-    .span-2 { grid-column:span 2; }
+    .span-2 { grid-column: span 2; }
 
-    .operator { background:var(--operator); color:#fff; }
-    .operator:hover { background:var(--operator-hover); }
-    .equals { background:var(--primary); color:#fff; }
-    .equals:hover { background:var(--primary-hover); }
-    .clear, .delete { background:var(--danger); color:#fff; }
-    .clear:hover, .delete:hover { background:#f87171; }
+    .operator { background: var(--operator); color: #fff; }
+    .operator:hover { background: var(--operator-hover); }
+    .equals { background: var(--primary); color: #fff; }
+    .equals:hover { background: var(--primary-hover); }
+    .clear, .delete { background: var(--danger); color: #fff; }
+    .clear:hover, .delete:hover { background: #f87171; }
 
     @media (max-width: 480px) {
-      .calculator { margin:1rem; }
-      button { padding:1rem; font-size:1.2rem; }
-      .display { padding:1rem; }
-      .current-operand { font-size:2rem; }
+      .calculator { margin: 1rem; }
+      button { padding: 1rem; font-size: 1.2rem; }
+      .display { padding: 1rem; }
+      .current-operand { font-size: 2rem; }
     }
   </style>
 </head>
@@ -122,7 +125,7 @@
     <input type="checkbox" id="toggler"><label for="toggler"></label>
   </div>
 
-  <!-- Close button that redirects to about.html -->
+  <!-- Close button to about.html -->
   <button class="close-button" onclick="location.href='about.html'">×</button>
 
   <div class="calculator">
@@ -171,28 +174,41 @@
         curr = ''; reset = false;
       }
       if (n === '.' && curr.includes('.')) return;
-      curr += n; update();
+      curr += n;
+      update();
     }
 
     function appendOperator(o) {
       if (!curr) return;
-      if (prev) calc();
-      op = o; prev = curr; curr = ''; update();
+      if (prev) calculate();
+      op = o;
+      prev = curr;
+      curr = '';
+      update();
     }
 
-    function calc() {
+    function calculate() {
       const a = parseFloat(prev), b = parseFloat(curr);
       if (isNaN(a) || isNaN(b)) return;
       let r = op === '+' ? a + b : op === '-' ? a - b : op === '*' ? a * b : a / b;
-      curr = r.toString(); prev = ''; op = undefined; reset = true; update();
+      curr = r.toString();
+      prev = '';
+      op = undefined;
+      reset = true;
+      update();
     }
 
     function clearAll() {
-      curr = '0'; prev = ''; op = undefined; reset = false; update();
+      curr = '0';
+      prev = '';
+      op = undefined;
+      reset = false;
+      update();
     }
 
     function deleteLast() {
-      curr = curr.slice(0, -1) || '0'; update();
+      curr = curr.slice(0, -1) || '0';
+      update();
     }
 
     function update() {
@@ -204,12 +220,12 @@
       if (/\d/.test(e.key)) appendNumber(e.key);
       if (e.key === '.') appendNumber('.');
       if (/[+\-*/]/.test(e.key)) appendOperator(e.key);
-      if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calc(); }
+      if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calculate(); }
       if (e.key === 'Backspace') deleteLast();
       if (e.key === 'Escape') clearAll();
     });
 
-    update(); // initial render
+    update(); // initial display
   </script>
 </body>
 </html>
