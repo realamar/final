@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bulb ON/OFF Demo</title>
+  <title>Patlu's Bright Idea</title>
   <style>
     body {
       margin: 0;
@@ -23,6 +23,7 @@
       padding: 2.5rem 3.5rem;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
 
     img {
@@ -73,13 +74,30 @@
       color: #c0392b;
       transform: rotate(90deg);
     }
+
+    .idea-popup {
+      display: none;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffbb00;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: pop 0.5s ease-out;
+    }
+
+    @keyframes pop {
+      0% { transform: translateX(-50%) scale(0.5); opacity: 0; }
+      100% { transform: translateX(-50%) scale(1); opacity: 1; }
+    }
   </style>
 </head>
 <body>
   <a href="about.html" class="close-button" title="Go back">✕</a>
 
   <div class="container">
-    <h2>Toggle the Bulb</h2>
+    <div id="ideaText" class="idea-popup">💡 Idea!</div>
     <img id="bulbImage" src="https://www.w3schools.com/js/pic_bulboff.gif" alt="Bulb">
     <br />
     <button id="toggleBtn">Turn ON</button>
@@ -88,6 +106,7 @@
   <script>
     const bulb = document.getElementById('bulbImage');
     const button = document.getElementById('toggleBtn');
+    const idea = document.getElementById('ideaText');
 
     let isOn = false;
 
@@ -95,9 +114,11 @@
       if (isOn) {
         bulb.src = "https://www.w3schools.com/js/pic_bulboff.gif";
         button.textContent = "Turn ON";
+        idea.style.display = "none";
       } else {
         bulb.src = "https://www.w3schools.com/js/pic_bulbon.gif";
         button.textContent = "Turn OFF";
+        idea.style.display = "block";
       }
       isOn = !isOn;
     });
