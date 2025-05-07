@@ -1,289 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculator</title>
+  <!-- Inter font for modern look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* CSS VARIABLES */
+    :root {
+      --bg: #e0e5ec;
+      --panel: #f8f9fa;
+      --text: #1f2937;
+      --text-muted: #6b7280;
+      --accent: #10b981;
+      --accent-hover: #34d399;
+      --operator: #f59e0b;
+      --operator-hover: #fbbf24;
+      --danger: #ef4444;
+      --shadow-light: rgba(255,255,255,0.7);
+      --shadow-dark: rgba(0,0,0,0.15);
+      --font: 'Inter', Arial, sans-serif;
+    }
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            position: relative;
-        }
+    /* GLOBAL RESET */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: var(--font);
+    }
 
-        /* Close Button */
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            transition: background-color 0.2s ease, transform 0.2s ease;
-        }
+    body {
+      display: flex; justify-content: center; align-items: center;
+      min-height: 100vh; background: var(--bg);
+      color: var(--text); position: relative;
+    }
 
-        .close-button:hover {
-            background-color: #dc2626;
-            transform: scale(1.1);
-        }
+    /* CLOSE BUTTON */
+    .close-button {
+      position: absolute; top: 1rem; right: 1rem;
+      background: var(--danger); color: #fff; border: none;
+      border-radius: 50%; width: 2.5rem; height: 2.5rem;
+      font-size: 1.25rem; cursor: pointer;
+      box-shadow:
+        inset 2px 2px 5px var(--shadow-light),
+        inset -2px -2px 5px var(--shadow-dark);
+      transition: transform .2s, background .2s;
+    }
+    .close-button:hover {
+      background: #dc2626; transform: scale(1.1);
+    }
 
-        .calculator {
-            width: 320px;
-            background-color: #fff;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-        }
+    /* CALCULATOR PANEL */
+    .calculator {
+      width: 360px; border-radius: 1rem;
+      background: var(--panel);
+      box-shadow:
+        inset 8px 8px 16px var(--shadow-light),
+        inset -8px -8px 16px var(--shadow-dark),
+        4px 4px 8px var(--shadow-dark);
+      overflow: hidden;
+    }
 
-        .display {
-            padding: 20px;
-            text-align: right;
-            background-color: #1e293b;
-            color: white;
-        }
+    .display {
+      padding: 1.5rem; text-align: right;
+      background: var(--panel);
+      box-shadow:
+        inset 4px 4px 8px var(--shadow-light),
+        inset -4px -4px 8px var(--shadow-dark);
+    }
+    .previous-operand {
+      font-size: 1rem; color: var(--text-muted);
+      min-height: 1.2em;
+    }
+    .current-operand {
+      font-size: 2.5rem; font-weight: 600;
+      min-height: 1.5em; word-wrap: break-word;
+    }
 
-        .previous-operand {
-            min-height: 24px;
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            overflow-wrap: break-word;
-        }
+    /* BUTTON GRID */
+    .buttons {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 1px; background: var(--bg);
+    }
 
-        .current-operand {
-            min-height: 48px;
-            font-size: 2rem;
-            font-weight: bold;
-            overflow-wrap: break-word;
-        }
+    button {
+      padding: 1.5rem; font-size: 1.2rem; cursor: pointer;
+      border: none; background: var(--panel);
+      box-shadow:
+        4px 4px 8px var(--shadow-dark),
+        -4px -4px 8px var(--shadow-light);
+      transition: background .2s, transform .1s;
+    }
+    button:hover {
+      background: var(--bg);
+    }
+    button:active {
+      transform: translateY(2px);
+      box-shadow: inset 4px 4px 8px var(--shadow-dark),
+                  inset -4px -4px 8px var(--shadow-light);
+    }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background-color: #ddd;
-        }
+    /* SPANS */
+    .span-2 { grid-column: span 2; }
 
-        button {
-            border: none;
-            outline: none;
-            padding: 20px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            background-color: #fff;
-            transition: all 0.2s;
-        }
+    /* OPERATOR BUTTONS */
+    .operator {
+      background: var(--operator); color: #fff;
+    }
+    .operator:hover { background: var(--operator-hover); }
 
-        button:hover {
-            background-color: #f0f0f0;
-        }
+    /* EQUALS BUTTON */
+    .equals {
+      background: var(--accent); color: #fff;
+    }
+    .equals:hover { background: var(--accent-hover); }
 
-        button:active {
-            background-color: #e0e0e0;
-        }
+    /* CLEAR & DELETE */
+    .clear, .delete {
+      background: var(--danger); color: #fff;
+    }
+    .clear:hover, .delete:hover { background: #f87171; }
 
-        .operator {
-            background-color: #f59e0b;
-            color: white;
-        }
-
-        .operator:hover {
-            background-color: #fbbf24;
-        }
-
-        .operator:active {
-            background-color: #d97706;
-        }
-
-        .equals {
-            background-color: #10b981;
-            color: white;
-        }
-
-        .equals:hover {
-            background-color: #34d399;
-        }
-
-        .equals:active {
-            background-color: #059669;
-        }
-
-        .clear, .delete {
-            background-color: #ef4444;
-            color: white;
-        }
-
-        .clear:hover, .delete:hover {
-            background-color: #f87171;
-        }
-
-        .clear:active, .delete:active {
-            background-color: #dc2626;
-        }
-
-        .span-2 {
-            grid-column: span 2;
-        }
-    </style>
+    /* RESPONSIVE FONT SIZING */
+    @media (max-width: 400px) {
+      .calculator { width: 100%; margin: 1rem; }
+      button { padding: 1rem; font-size: 1rem; }
+      .display { padding: 1rem; }
+      .current-operand { font-size: 2rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Close Button -->
-    <button class="close-button" onclick="goBack()">×</button>
+  <!-- Close Button -->
+  <button class="close-button" onclick="goBack()">×</button>
 
-    <div class="calculator">
-        <div class="display">
-            <div class="previous-operand" id="previous-operand"></div>
-            <div class="current-operand" id="current-operand">0</div>
-        </div>
-        <div class="buttons">
-            <button class="clear span-2" onclick="clearAll()">AC</button>
-            <button class="delete" onclick="deleteLast()">DEL</button>
-            <button class="operator" onclick="appendOperator('/')">÷</button>
-            
-            <button onclick="appendNumber('7')">7</button>
-            <button onclick="appendNumber('8')">8</button>
-            <button onclick="appendNumber('9')">9</button>
-            <button class="operator" onclick="appendOperator('*')">×</button>
-            
-            <button onclick="appendNumber('4')">4</button>
-            <button onclick="appendNumber('5')">5</button>
-            <button onclick="appendNumber('6')">6</button>
-            <button class="operator" onclick="appendOperator('-')">-</button>
-            
-            <button onclick="appendNumber('1')">1</button>
-            <button onclick="appendNumber('2')">2</button>
-            <button onclick="appendNumber('3')">3</button>
-            <button class="operator" onclick="appendOperator('+')">+</button>
-            
-            <button onclick="appendNumber('0')">0</button>
-            <button onclick="appendNumber('.')">.</button>
-            <button class="equals span-2" onclick="calculate()">=</button>
-        </div>
+  <div class="calculator">
+    <div class="display">
+      <div id="previous-operand" class="previous-operand"></div>
+      <div id="current-operand" class="current-operand">0</div>
     </div>
+    <div class="buttons">
+      <button class="clear span-2" onclick="clearAll()">AC</button>
+      <button class="delete" onclick="deleteLast()">DEL</button>
+      <button class="operator" onclick="appendOperator('/')">÷</button>
 
-    <script>
-        let currentOperand = '0';
-        let previousOperand = '';
-        let operation = undefined;
-        let resetScreen = false;
+      <button onclick="appendNumber('7')">7</button>
+      <button onclick="appendNumber('8')">8</button>
+      <button onclick="appendNumber('9')">9</button>
+      <button class="operator" onclick="appendOperator('*')">×</button>
 
-        const currentOperandElement = document.getElementById('current-operand');
-        const previousOperandElement = document.getElementById('previous-operand');
+      <button onclick="appendNumber('4')">4</button>
+      <button onclick="appendNumber('5')">5</button>
+      <button onclick="appendNumber('6')">6</button>
+      <button class="operator" onclick="appendOperator('-')">−</button>
 
-        function appendNumber(number) {
-            if (currentOperand === '0' || resetScreen) {
-                currentOperand = '';
-                resetScreen = false;
-            }
-            if (number === '.' && currentOperand.includes('.')) return;
-            currentOperand += number;
-            updateDisplay();
-        }
+      <button onclick="appendNumber('1')">1</button>
+      <button onclick="appendNumber('2')">2</button>
+      <button onclick="appendNumber('3')">3</button>
+      <button class="operator" onclick="appendOperator('+')">+</button>
 
-        function appendOperator(operator) {
-            if (currentOperand === '') return;
-            if (previousOperand !== '') {
-                calculate();
-            }
-            operation = operator;
-            previousOperand = currentOperand;
-            currentOperand = '';
-            updateDisplay();
-        }
+      <button onclick="appendNumber('0')">0</button>
+      <button onclick="appendNumber('.')">.</button>
+      <button class="equals span-2" onclick="calculate()">=</button>
+    </div>
+  </div>
 
-        function calculate() {
-            let computation;
-            const prev = parseFloat(previousOperand);
-            const current = parseFloat(currentOperand);
-            
-            if (isNaN(prev) || isNaN(current)) return;
-            
-            switch (operation) {
-                case '+':
-                    computation = prev + current;
-                    break;
-                case '-':
-                    computation = prev - current;
-                    break;
-                case '*':
-                    computation = prev * current;
-                    break;
-                case '/':
-                    computation = prev / current;
-                    break;
-                default:
-                    return;
-            }
-            
-            currentOperand = computation.toString();
-            operation = undefined;
-            previousOperand = '';
-            resetScreen = true;
-            updateDisplay();
-        }
+  <script>
+    let current='0', previous='', op, reset=false;
+    const curEl=document.getElementById('current-operand'),
+          prevEl=document.getElementById('previous-operand');
 
-        function clearAll() {
-            currentOperand = '0';
-            previousOperand = '';
-            operation = undefined;
-            updateDisplay();
-        }
-
-        function deleteLast() {
-            if (currentOperand.length === 1 || (currentOperand.length === 2 && currentOperand.startsWith('-'))) {
-                currentOperand = '0';
-            } else {
-                currentOperand = currentOperand.slice(0, -1);
-            }
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            currentOperandElement.innerText = currentOperand;
-            if (operation != null) {
-                previousOperandElement.innerText = `${previousOperand} ${operation}`;
-            } else {
-                previousOperandElement.innerText = previousOperand;
-            }
-        }
-
-        function goBack() {
-            window.history.back();
-        }
-
-        // Keyboard support
-        document.addEventListener('keydown', (e) => {
-            if (e.key >= '0' && e.key <= '9') appendNumber(e.key);
-            else if (e.key === '.') appendNumber('.');
-            else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
-                appendOperator(e.key);
-            }
-            else if (e.key === 'Enter' || e.key === '=') {
-                e.preventDefault();
-                calculate();
-            }
-            else if (e.key === 'Escape') clearAll();
-            else if (e.key === 'Backspace') deleteLast();
-        });
-    </script>
+    function appendNumber(n){
+      if(curEl.innerText==='0'||reset){ curEl.innerText=''; reset=false; }
+      if(n==='.' && curEl.innerText.includes('.')) return;
+      curEl.innerText+=n;
+    }
+    function appendOperator(o){
+      if(!curEl.innerText) return;
+      if(previous) calculate();
+      op=o; previous=curEl.innerText; curEl.innerText='';
+    }
+    function calculate(){
+      const a=parseFloat(previous), b=parseFloat(curEl.innerText);
+      if(isNaN(a)||isNaN(b)) return;
+      let res= op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:op==='/'?a/b:0;
+      curEl.innerText=res; previous=''; op=undefined; reset=true;
+    }
+    function clearAll(){ curEl.innerText='0'; prevEl.innerText=''; previous=''; op=undefined;}
+    function deleteLast(){
+      curEl.innerText=curEl.innerText.slice(0,-1)||'0';
+    }
+    function updatePrev(){ prevEl.innerText= previous? previous+' '+op : ''; }
+    document.querySelectorAll('.operator').forEach(b=>b.addEventListener('click', updatePrev));
+    document.addEventListener('keydown', e=>{
+      if(/[0-9]/.test(e.key)) appendNumber(e.key);
+      if(e.key==='.') appendNumber('.');
+      if(/[\+\-\*\/]/.test(e.key)){ appendOperator(e.key); updatePrev(); }
+      if(e.key==='Enter'){ e.preventDefault(); calculate(); }
+      if(e.key==='Backspace') deleteLast();
+      if(e.key==='Escape') clearAll();
+    });
+    function goBack(){ window.history.back(); }
+  </script>
 </body>
 </html>
