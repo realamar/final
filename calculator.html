@@ -1,139 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Calculator</title>
-  <!-- Inter font for modern look -->
+  <!-- Inter font for clean modern typography -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    /* CSS VARIABLES */
     :root {
       --bg: #e0e5ec;
       --panel: #f8f9fa;
       --text: #1f2937;
       --text-muted: #6b7280;
-      --accent: #10b981;
-      --accent-hover: #34d399;
+      --primary: #10b981;
+      --primary-hover: #34d399;
       --operator: #f59e0b;
       --operator-hover: #fbbf24;
       --danger: #ef4444;
       --shadow-light: rgba(255,255,255,0.7);
       --shadow-dark: rgba(0,0,0,0.15);
       --font: 'Inter', Arial, sans-serif;
+      --btn-radius: 12px;
     }
-
-    /* GLOBAL RESET */
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: var(--font);
+    .dark {
+      --bg: #1e1e2f;
+      --panel: #2a2a3d;
+      --text: #e4e4e8;
+      --text-muted: #a1a1aa;
+      --shadow-light: rgba(255,255,255,0.1);
+      --shadow-dark: rgba(0,0,0,0.6);
     }
-
+    * { margin:0; padding:0; box-sizing:border-box; font-family:var(--font); }
     body {
-      display: flex; justify-content: center; align-items: center;
-      min-height: 100vh; background: var(--bg);
-      color: var(--text); position: relative;
+      display:flex; align-items:center; justify-content:center;
+      min-height:100vh; background:var(--bg); color:var(--text);
+      transition: background .3s, color .3s;
     }
 
-    /* CLOSE BUTTON */
+    .theme-toggle {
+      position:absolute; top:1rem; left:1rem;
+    }
+    .theme-toggle input { display:none; }
+    .theme-toggle label {
+      cursor:pointer; width:50px; height:26px; display:block; position:relative;
+      background:#ccc; border-radius:34px; transition:.4s;
+    }
+    .theme-toggle label:before {
+      content:""; position:absolute; width:20px; height:20px; left:3px; bottom:3px;
+      background:#fff; border-radius:50%; transition:.4s;
+    }
+    .theme-toggle input:checked + label { background:#666; }
+    .theme-toggle input:checked + label:before { transform:translateX(24px); }
+
     .close-button {
-      position: absolute; top: 1rem; right: 1rem;
-      background: var(--danger); color: #fff; border: none;
-      border-radius: 50%; width: 2.5rem; height: 2.5rem;
-      font-size: 1.25rem; cursor: pointer;
-      box-shadow:
-        inset 2px 2px 5px var(--shadow-light),
-        inset -2px -2px 5px var(--shadow-dark);
-      transition: transform .2s, background .2s;
+      position:absolute; top:1rem; right:1rem;
+      background:var(--danger); color:#fff; border:none;
+      width:2.5rem; height:2.5rem; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: inset 2px 2px 5px var(--shadow-light), inset -2px -2px 5px var(--shadow-dark);
+      cursor:pointer; transition:transform .2s, background .2s;
     }
-    .close-button:hover {
-      background: #dc2626; transform: scale(1.1);
-    }
+    .close-button:hover { transform:scale(1.1); background:#dc2626; }
 
-    /* CALCULATOR PANEL */
     .calculator {
-      width: 360px; border-radius: 1rem;
-      background: var(--panel);
+      width: 100%; max-width: 480px; border-radius:1rem;
+      background:var(--panel);
       box-shadow:
         inset 8px 8px 16px var(--shadow-light),
         inset -8px -8px 16px var(--shadow-dark),
         4px 4px 8px var(--shadow-dark);
-      overflow: hidden;
+      overflow:hidden; padding-bottom:1rem;
     }
 
     .display {
-      padding: 1.5rem; text-align: right;
-      background: var(--panel);
-      box-shadow:
-        inset 4px 4px 8px var(--shadow-light),
-        inset -4px -4px 8px var(--shadow-dark);
+      padding:2rem; text-align:right;
+      box-shadow: inset 4px 4px 8px var(--shadow-light), inset -4px -4px 8px var(--shadow-dark);
     }
     .previous-operand {
-      font-size: 1rem; color: var(--text-muted);
-      min-height: 1.2em;
+      font-size:1rem; color:var(--text-muted); min-height:1.2em;
     }
     .current-operand {
-      font-size: 2.5rem; font-weight: 600;
-      min-height: 1.5em; word-wrap: break-word;
+      font-size:2.5rem; font-weight:600; min-height:1.5em; word-wrap:break-word;
     }
 
-    /* BUTTON GRID */
     .buttons {
-      display: grid; grid-template-columns: repeat(4,1fr);
-      gap: 1px; background: var(--bg);
+      display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; padding:0 1rem;
     }
-
     button {
-      padding: 1.5rem; font-size: 1.2rem; cursor: pointer;
-      border: none; background: var(--panel);
-      box-shadow:
-        4px 4px 8px var(--shadow-dark),
-        -4px -4px 8px var(--shadow-light);
-      transition: background .2s, transform .1s;
+      padding:1.5rem; font-size:1.4rem; cursor:pointer; border:none;
+      background:var(--panel); border-radius:var(--btn-radius);
+      box-shadow: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+      transition: background .2s, transform .1s, box-shadow .2s;
     }
-    button:hover {
-      background: var(--bg);
-    }
+    button:hover { background:var(--bg); }
     button:active {
-      transform: translateY(2px);
-      box-shadow: inset 4px 4px 8px var(--shadow-dark),
-                  inset -4px -4px 8px var(--shadow-light);
+      transform:translateY(2px);
+      box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     }
 
-    /* SPANS */
-    .span-2 { grid-column: span 2; }
+    .span-2 { grid-column:span 2; }
 
-    /* OPERATOR BUTTONS */
-    .operator {
-      background: var(--operator); color: #fff;
-    }
-    .operator:hover { background: var(--operator-hover); }
+    .operator { background:var(--operator); color:#fff; }
+    .operator:hover { background:var(--operator-hover); }
+    .equals { background:var(--primary); color:#fff; }
+    .equals:hover { background:var(--primary-hover); }
+    .clear, .delete { background:var(--danger); color:#fff; }
+    .clear:hover, .delete:hover { background:#f87171; }
 
-    /* EQUALS BUTTON */
-    .equals {
-      background: var(--accent); color: #fff;
-    }
-    .equals:hover { background: var(--accent-hover); }
-
-    /* CLEAR & DELETE */
-    .clear, .delete {
-      background: var(--danger); color: #fff;
-    }
-    .clear:hover, .delete:hover { background: #f87171; }
-
-    /* RESPONSIVE FONT SIZING */
-    @media (max-width: 400px) {
-      .calculator { width: 100%; margin: 1rem; }
-      button { padding: 1rem; font-size: 1rem; }
-      .display { padding: 1rem; }
-      .current-operand { font-size: 2rem; }
+    @media (max-width: 480px) {
+      .calculator { margin:1rem; }
+      button { padding:1rem; font-size:1.2rem; }
+      .display { padding:1rem; }
+      .current-operand { font-size:2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Close Button -->
-  <button class="close-button" onclick="goBack()">×</button>
+  <!-- Theme toggle -->
+  <div class="theme-toggle">
+    <input type="checkbox" id="toggler"><label for="toggler"></label>
+  </div>
+
+  <!-- Close button that redirects to about.html -->
+  <button class="close-button" onclick="location.href='about.html'">×</button>
 
   <div class="calculator">
     <div class="display">
@@ -167,41 +157,59 @@
   </div>
 
   <script>
-    let current='0', previous='', op, reset=false;
-    const curEl=document.getElementById('current-operand'),
-          prevEl=document.getElementById('previous-operand');
-
-    function appendNumber(n){
-      if(curEl.innerText==='0'||reset){ curEl.innerText=''; reset=false; }
-      if(n==='.' && curEl.innerText.includes('.')) return;
-      curEl.innerText+=n;
-    }
-    function appendOperator(o){
-      if(!curEl.innerText) return;
-      if(previous) calculate();
-      op=o; previous=curEl.innerText; curEl.innerText='';
-    }
-    function calculate(){
-      const a=parseFloat(previous), b=parseFloat(curEl.innerText);
-      if(isNaN(a)||isNaN(b)) return;
-      let res= op==='+'?a+b:op==='-'?a-b:op==='*'?a*b:op==='/'?a/b:0;
-      curEl.innerText=res; previous=''; op=undefined; reset=true;
-    }
-    function clearAll(){ curEl.innerText='0'; prevEl.innerText=''; previous=''; op=undefined;}
-    function deleteLast(){
-      curEl.innerText=curEl.innerText.slice(0,-1)||'0';
-    }
-    function updatePrev(){ prevEl.innerText= previous? previous+' '+op : ''; }
-    document.querySelectorAll('.operator').forEach(b=>b.addEventListener('click', updatePrev));
-    document.addEventListener('keydown', e=>{
-      if(/[0-9]/.test(e.key)) appendNumber(e.key);
-      if(e.key==='.') appendNumber('.');
-      if(/[\+\-\*\/]/.test(e.key)){ appendOperator(e.key); updatePrev(); }
-      if(e.key==='Enter'){ e.preventDefault(); calculate(); }
-      if(e.key==='Backspace') deleteLast();
-      if(e.key==='Escape') clearAll();
+    const toggler = document.getElementById('toggler');
+    toggler.addEventListener('change', () => {
+      document.documentElement.classList.toggle('dark');
     });
-    function goBack(){ window.history.back(); }
+
+    let curr = '0', prev = '', op, reset = false;
+    const curEl = document.getElementById('current-operand'),
+          prevEl = document.getElementById('previous-operand');
+
+    function appendNumber(n) {
+      if (curr === '0' || reset) {
+        curr = ''; reset = false;
+      }
+      if (n === '.' && curr.includes('.')) return;
+      curr += n; update();
+    }
+
+    function appendOperator(o) {
+      if (!curr) return;
+      if (prev) calc();
+      op = o; prev = curr; curr = ''; update();
+    }
+
+    function calc() {
+      const a = parseFloat(prev), b = parseFloat(curr);
+      if (isNaN(a) || isNaN(b)) return;
+      let r = op === '+' ? a + b : op === '-' ? a - b : op === '*' ? a * b : a / b;
+      curr = r.toString(); prev = ''; op = undefined; reset = true; update();
+    }
+
+    function clearAll() {
+      curr = '0'; prev = ''; op = undefined; reset = false; update();
+    }
+
+    function deleteLast() {
+      curr = curr.slice(0, -1) || '0'; update();
+    }
+
+    function update() {
+      curEl.innerText = curr;
+      prevEl.innerText = prev ? `${prev} ${op || ''}` : '';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (/\d/.test(e.key)) appendNumber(e.key);
+      if (e.key === '.') appendNumber('.');
+      if (/[+\-*/]/.test(e.key)) appendOperator(e.key);
+      if (e.key === 'Enter' || e.key === '=') { e.preventDefault(); calc(); }
+      if (e.key === 'Backspace') deleteLast();
+      if (e.key === 'Escape') clearAll();
+    });
+
+    update(); // initial render
   </script>
 </body>
 </html>
